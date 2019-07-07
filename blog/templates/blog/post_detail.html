@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block breadcrumb %}{{ block.super }} >> Blog Details{% endblock %}
+
+{% block content %}
+
+
+    <div class="blog-item">
+        <h2><a href="#">{{ post.title }}</a></h2>
+        <div class="info">
+            By <span><a href="#">{{ post.created_by }}</a></span>
+            | On <span>{{ post.created_date }}</span>
+        </div>
+        <p>
+            {{ post.content }}
+        </p>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" height="300" width="500" border="10"/>
+        {% endif %}
+    </div>
+    <div class="form">
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Comment"/>
+        </form>
+    </div>
+    <div class="comments-list">
+        {% for cmt in comments %}
+            <div class="comment">
+                <img src="{% static 'blog/images/avatar.png' %}" alt="avatar">
+                <div class="info">
+                    <p>{{ cmt.commented_by }}<span> .{{ cmt.commented_on }}</span></p>
+                    <p>{{ cmt.comment }}.</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>No Comment list</p>
+        {% endfor %}
+    </div>
+{% endblock %}
